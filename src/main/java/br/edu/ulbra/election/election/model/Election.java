@@ -26,7 +26,7 @@ public class Election {
         this.id = id;
     }
 
-    public String getYear() {
+    public Integer getYear() {
         return year;
     }
 
