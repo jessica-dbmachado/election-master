@@ -154,7 +154,7 @@ public class ElectionService {
 
     private void validateInput(ElectionInput electionInput, boolean isUpdate){
      
-   if (electionInput.getYear()==null){
+   if (electionInput.getYear()==null || electionInput.getYear() > 2000 && electionInput.getYear() < 2200){
             throw new GenericOutputException("Invalid year");
         }
 
@@ -163,9 +163,12 @@ public class ElectionService {
     }
 
 
-   if (StringUtils.isBlank(electionInput.getDescription())){
+   if (StringUtils.isBlank(electionInput.getDescription() )){
             throw new GenericOutputException("Invalid Description");
     }
+   if (electionInput.getDescription().length() <5){
+       throw new GenericOutputException("Short Description");
+   }
     }}
    
                         
