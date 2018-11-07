@@ -1,4 +1,4 @@
-package br.edu.ulbra.election.voter.exception;
+package br.edu.ulbra.election.election.exception;
 
 public class GenericOutputException extends RuntimeException {
 

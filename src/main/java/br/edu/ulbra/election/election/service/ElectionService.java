@@ -2,15 +2,15 @@ package br.edu.ulbra.election.election.service;
 
 import br.edu.ulbra.election.election.exception.GenericOutputException;
 
-import br.edu.ulbra.election.election.input.v1.electionInput;
+import br.edu.ulbra.election.election.input.v1.ElectionInput;
 
-import br.edu.ulbra.election.election.model.election;
+import br.edu.ulbra.election.election.model.Election;
 
 import br.edu.ulbra.election.election.output.v1.GenericOutput;
 
-import br.edu.ulbra.election.election.output.v1.electionOutput;
+import br.edu.ulbra.election.election.output.v1.ElectionOutput;
 
-import br.edu.ulbra.election.election.repository.electionRepository;
+import br.edu.ulbra.election.election.repository.ElectionRepository;
 
 import org.apache.commons.lang.StringUtils;
 
@@ -47,29 +47,30 @@ public class ElectionService {
 
    
  @Autowired
-    public electionService(electionRepository electionRepository, ModelMapper modelMapper){
-        this.electionRepository = electionRepository;
+    public  ElectionService(ElectionRepository electionRepository, ModelMapper modelMapper){
+       
+	 this.electionRepository = electionRepository;
   
       this.modelMapper = modelMapper;
    
      
   }
 
-    public List<VoterOutput> getAll(){
+    public List<ElectionOutput> getAll(){
       
-  Type electionOutputListType = new TypeToken<List<electionOutput>>(){}.getType();
+  Type electionOutputListType = new TypeToken<List<ElectionOutput>>(){}.getType();
       
   return modelMapper.map(electionRepository.findAll(), electionOutputListType);
   
 
   }
 
-    public ElectionOutput create(electionInput electionInput)
+    public ElectionOutput create(ElectionInput electionInput)
  {
         
-validateInput(electionInput, false);
+    	validateInput(electionInput, false);
   
-      Election election= modelMapper.map(electionInput, election.class);
+      Election election= modelMapper.map(electionInput, Election.class);
  
      
         election= electionRepository.save(election);
@@ -99,7 +100,7 @@ validateInput(electionInput, false);
  
    }
 
-    public ElectionOutput update(Long electionId, electionInput electionInput) {
+    public ElectionOutput update(Long electionId, ElectionInput electionInput) {
   
       if (electionId == null){
         
@@ -137,7 +138,7 @@ validateInput(electionInput, false);
         }
 
      
-   election election = electionRepository.findById(electionId).orElse(null);
+   Election election = electionRepository.findById(electionId).orElse(null);
   
       if (election == null){
             throw new GenericOutputException(MESSAGE_ELECTION_NOT_FOUND);
@@ -151,9 +152,9 @@ validateInput(electionInput, false);
   
   }
 
-    private void validateInput(electionInput electionInput, boolean isUpdate){
+    private void validateInput(ElectionInput electionInput, boolean isUpdate){
      
-   if (StringUtils.isBlank(electionInput.getYear())){
+   if (electionInput.getYear()==null){
             throw new GenericOutputException("Invalid year");
         }
 
@@ -165,6 +166,6 @@ validateInput(electionInput, false);
    if (StringUtils.isBlank(electionInput.getDescription())){
             throw new GenericOutputException("Invalid Description");
     }
-  
+    }}
    
                         
