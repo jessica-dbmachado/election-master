@@ -154,8 +154,8 @@ public class ElectionService {
 
     private void validateInput(ElectionInput electionInput, boolean isUpdate){
      
-   if (electionInput.getYear()==null || electionInput.getYear() > 2000 && electionInput.getYear() < 2200){
-            throw new GenericOutputException("Invalid year");
+   if (electionInput.getYear()==null || electionInput.getYear() < 2000 || electionInput.getYear() > 2200){
+            throw new GenericOutputException("Invalid year, should be between 2000's and 2200");
         }
 
    if (StringUtils.isBlank(electionInput.getStateCode())){
@@ -169,6 +169,25 @@ public class ElectionService {
    if (electionInput.getDescription().length() <5){
        throw new GenericOutputException("Short Description");
    }
+   
+   //validate estates
+   String Estados[] = {"AC", "AL", "AP", "AM", "BA", "CE", "DF", "ES", "GO", 
+	"MA", "MT", "MS", "MG", "PA", "PB", "PR", "PE", "PI", "RJ", "RN", "RS",
+	"RO", "RR", "SC", "SP", "SE", "TO"};
+	String testeEstado =electionInput.getStateCode();
+	
+	for( String x : Estados)
+	{
+		if(testeEstado.equals(x) == false)
+		{
+			throw new GenericOutputException("Please enter a valid estate code");
+		}
+	}
+   
+   if (electionInput.getDescription().length() <5){
+       throw new GenericOutputException("Short Description");
+   }
+   
     }}
    
                         
