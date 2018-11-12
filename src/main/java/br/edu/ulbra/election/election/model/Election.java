@@ -1,7 +1,7 @@
 package br.edu.ulbra.election.election.model;
 
 import javax.persistence.*;
-//id / Integer year / String stateCode / String description
+
 @Entity
 public class Election {
 
@@ -49,4 +49,5 @@ public class Election {
     public void setDescription(String description) {
         this.description = description;
     }
+
 }
