@@ -123,7 +123,7 @@ public class ElectionService {
     }
     
     //interface Candidate
-    
+    /*
     @FeignClient(value="candidate-service", url="${url.candidate-service}")
     private interface ElectionClient {
 
@@ -131,7 +131,7 @@ public class ElectionService {
         CandidateOutput getById(@PathVariable(name = "candidateId") Long candidateId);
     }
     
-    //interface Voter
+    //interface Voter*/
     
    
 
