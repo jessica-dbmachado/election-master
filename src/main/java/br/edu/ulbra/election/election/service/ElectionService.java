@@ -4,6 +4,9 @@ import br.edu.ulbra.election.election.enums.StateCodes;
 import br.edu.ulbra.election.election.exception.GenericOutputException;
 import br.edu.ulbra.election.election.input.v1.ElectionInput;
 import br.edu.ulbra.election.election.model.Election;
+
+
+import br.edu.ulbra.election.election.output.v1.CandidateOutput;
 import br.edu.ulbra.election.election.output.v1.ElectionOutput;
 import br.edu.ulbra.election.election.output.v1.GenericOutput;
 import br.edu.ulbra.election.election.repository.ElectionRepository;
@@ -11,7 +14,10 @@ import org.apache.commons.lang.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.lang.reflect.Type;
 import java.util.List;
@@ -115,5 +121,18 @@ public class ElectionService {
             throw new GenericOutputException("Invalid Year");
         }
     }
+    
+    //interface Candidate
+    
+    @FeignClient(value="candidate-service", url="${url.candidate-service}")
+    private interface ElectionClient {
+
+        @GetMapping("/v1/candidate/{candidateId}")
+        CandidateOutput getById(@PathVariable(name = "candidateId") Long candidateId);
+    }
+    
+    //interface Voter
+    
+   
 
 }
