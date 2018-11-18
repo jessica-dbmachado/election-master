@@ -62,7 +62,7 @@ public class VoteService {
                 }
             }
         
-        vote.setNullVote(false);
+        
 
         voteRepository.save(vote);
 
