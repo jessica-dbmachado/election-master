@@ -1,5 +1,6 @@
 package br.edu.ulbra.election.election.service;
 
+import br.edu.ulbra.election.election.client.CandidateClientService;
 import br.edu.ulbra.election.election.enums.StateCodes;
 import br.edu.ulbra.election.election.exception.GenericOutputException;
 import br.edu.ulbra.election.election.input.v1.ElectionInput;
@@ -15,6 +16,8 @@ import br.edu.ulbra.election.election.output.v1.ElectionOutput;
 import br.edu.ulbra.election.election.output.v1.GenericOutput;
 import br.edu.ulbra.election.election.repository.ElectionRepository;
 import br.edu.ulbra.election.election.repository.VoteRepository;
+import feign.FeignException;
+
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.service.spi.ServiceException;
 import org.modelmapper.ModelMapper;
@@ -35,12 +38,15 @@ public class ElectionService {
     private final ElectionRepository electionRepository;
     private final ModelMapper modelMapper;
     
+ 
+    
     @Autowired
     public ElectionService(ElectionRepository electionRepository,VoteRepository voteRepository, ModelMapper modelMapper){
         this.electionRepository = electionRepository;
         this.voteRepository = voteRepository;
-
         this.modelMapper = modelMapper;
+        
+
     }
 
     
@@ -109,6 +115,7 @@ public class ElectionService {
         {
         	
         	CheckExistingVotes(electionId);
+        	
         		
         }
             
@@ -163,6 +170,8 @@ public class ElectionService {
     		throw new GenericOutputException(MESSAGE_VOTE_ELECTION_FOUND);
     		
     }
+    	
+    	
    
 
 }}

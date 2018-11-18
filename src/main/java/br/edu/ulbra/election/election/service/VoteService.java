@@ -5,7 +5,7 @@ import br.edu.ulbra.election.election.client.CandidateClientService;
 import br.edu.ulbra.election.election.exception.GenericOutputException;
 import br.edu.ulbra.election.election.input.v1.VoteInput;
 import br.edu.ulbra.election.election.model.Election;
-
+import br.edu.ulbra.election.election.client.VoterClientService;
 import br.edu.ulbra.election.election.model.Vote;
 import br.edu.ulbra.election.election.output.v1.GenericOutput;
 import br.edu.ulbra.election.election.repository.ElectionRepository;
@@ -26,11 +26,14 @@ public class VoteService {
     
     private final CandidateClientService candidateClientService;
     
+    private final VoterClientService voterClientService;
+    
     @Autowired
-    public VoteService(VoteRepository voteRepository, ElectionRepository electionRepository, CandidateClientService candidateClientService){
+    public VoteService(VoteRepository voteRepository, ElectionRepository electionRepository, CandidateClientService candidateClientService,VoterClientService voterClientService){
         this.voteRepository = voteRepository;
         this.electionRepository = electionRepository;
         this.candidateClientService = candidateClientService;
+        this.voterClientService = voterClientService;
     }
 
     public GenericOutput electionVote(VoteInput voteInput){
@@ -78,6 +81,7 @@ public class VoteService {
 
     public Election validateInput(Long electionId, VoteInput voteInput){
         Election election = electionRepository.findById(electionId).orElse(null);
+        
 
         if (election == null){
             throw new GenericOutputException("Invalid Election");
@@ -85,12 +89,19 @@ public class VoteService {
         if (voteInput.getVoterId() == null){
             throw new GenericOutputException("Invalid Voter");
         }
-        
+      
 
         
         // TODO: Validate voter
-
+        try {
+       voterClientService.getById(voteInput.getVoterId());
+        } catch (FeignException e){
+            if (e.status() == 500) {
+                throw new GenericOutputException("INVALID VOTER");
+            }
+        	}
         return election;
     }
-   
-}
+    
+    
+    }
