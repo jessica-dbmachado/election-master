@@ -92,6 +92,9 @@ public class ElectionService {
         }else {
         	
         	CheckExistingVotes(electionId);
+        	
+        	
+        	
         }
         
 
@@ -171,7 +174,7 @@ public class ElectionService {
     		
     }
     	
-    	
+   	
    
 
 }}

@@ -95,6 +95,10 @@ public class VoteService {
         // TODO: Validate voter
         try {
        voterClientService.getById(voteInput.getVoterId());
+       if (voterClientService == null)
+       {
+    	   throw new GenericOutputException("INVALID VOTER");
+       }
         } catch (FeignException e){
             if (e.status() == 500) {
                 throw new GenericOutputException("INVALID VOTER");
