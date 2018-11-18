@@ -3,14 +3,20 @@ package br.edu.ulbra.election.election.service;
 import br.edu.ulbra.election.election.enums.StateCodes;
 import br.edu.ulbra.election.election.exception.GenericOutputException;
 import br.edu.ulbra.election.election.input.v1.ElectionInput;
+import br.edu.ulbra.election.election.input.v1.VoteInput;
+
 import br.edu.ulbra.election.election.model.Election;
+import br.edu.ulbra.election.election.model.Vote;
+
 
 
 import br.edu.ulbra.election.election.output.v1.CandidateOutput;
 import br.edu.ulbra.election.election.output.v1.ElectionOutput;
 import br.edu.ulbra.election.election.output.v1.GenericOutput;
 import br.edu.ulbra.election.election.repository.ElectionRepository;
+import br.edu.ulbra.election.election.repository.VoteRepository;
 import org.apache.commons.lang.StringUtils;
+import org.hibernate.service.spi.ServiceException;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,19 +31,22 @@ import java.util.List;
 @Service
 public class ElectionService {
 
+	private final VoteRepository voteRepository;
     private final ElectionRepository electionRepository;
     private final ModelMapper modelMapper;
     
     @Autowired
-    public ElectionService(ElectionRepository electionRepository, ModelMapper modelMapper){
+    public ElectionService(ElectionRepository electionRepository,VoteRepository voteRepository, ModelMapper modelMapper){
         this.electionRepository = electionRepository;
+        this.voteRepository = voteRepository;
+
         this.modelMapper = modelMapper;
     }
 
-
+    
     private static final String MESSAGE_INVALID_ID = "Invalid id";
     private static final String MESSAGE_ELECTION_NOT_FOUND = "Election not found";
-
+    private static final String MESSAGE_VOTE_ELECTION_FOUND="Election whit existing votes"; 
     public List<ElectionOutput> getAll(){
         Type electionOutputListType = new TypeToken<List<ElectionOutput>>(){}.getType();
         return modelMapper.map(electionRepository.findAll(), electionOutputListType);
@@ -74,7 +83,11 @@ public class ElectionService {
         Election election = electionRepository.findById(electionId).orElse(null);
         if (election == null){
             throw new GenericOutputException(MESSAGE_ELECTION_NOT_FOUND);
+        }else {
+        	
+        	CheckExistingVotes(electionId);
         }
+        
 
         election.setStateCode(electionInput.getStateCode());
         election.setDescription(electionInput.getDescription());
@@ -83,7 +96,8 @@ public class ElectionService {
         return modelMapper.map(election, ElectionOutput.class);
     }
 
-    public GenericOutput delete(Long electionId) {
+    
+	public GenericOutput delete(Long electionId) {
         if (electionId == null){
             throw new GenericOutputException(MESSAGE_INVALID_ID);
         }
@@ -91,7 +105,14 @@ public class ElectionService {
         Election election = electionRepository.findById(electionId).orElse(null);
         if (election == null){
             throw new GenericOutputException(MESSAGE_ELECTION_NOT_FOUND);
+        }else
+        {
+        	
+        	CheckExistingVotes(electionId);
+        		
         }
+            
+        
 
         electionRepository.delete(election);
 
@@ -133,6 +154,15 @@ public class ElectionService {
     
     //interface Voter*/
     
+    private void CheckExistingVotes(Long electionId) {
+    	
+    	//Verifica se existe votos na eleição
+    	
+    	if(voteRepository.findByElectionId(electionId)!=null) {
+    		
+    		throw new GenericOutputException(MESSAGE_VOTE_ELECTION_FOUND);
+    		
+    }
    
 
-}
+}}
