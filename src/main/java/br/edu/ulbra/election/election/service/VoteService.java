@@ -106,6 +106,10 @@ public class VoteService {
         	}
         return election;
     }
+
+	public List<Vote> GetCandidateVotes(Long candidateId) {
+
+		return voteRepository.findByCandidateId(candidateId);
+	}}
     
-    
-    }
+	
