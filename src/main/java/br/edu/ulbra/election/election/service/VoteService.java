@@ -1,6 +1,7 @@
 package br.edu.ulbra.election.election.service;
 
 import br.edu.ulbra.election.election.output.v1.CandidateOutput;
+
 import br.edu.ulbra.election.election.client.CandidateClientService;
 import br.edu.ulbra.election.election.exception.GenericOutputException;
 import br.edu.ulbra.election.election.input.v1.VoteInput;
@@ -110,6 +111,27 @@ public class VoteService {
 	public List<Vote> GetCandidateVotes(Long candidateId) {
 
 		return voteRepository.findByCandidateId(candidateId);
-	}}
+	}
+	
+	//delete
+    public GenericOutput delete(Long voteId) {
+        if (voteId == null){
+            throw new GenericOutputException("Invalid Vote ID");
+        }
+
+        Vote vote = voteRepository.findById(voteId).orElse(null);
+        if (vote == null){
+            throw new GenericOutputException("Not FOUND");
+        }
+
+        voteRepository.delete(vote);
+
+        return new GenericOutput("vote deleted");
+    }
+    
+
+    
+    
+}
     
 	

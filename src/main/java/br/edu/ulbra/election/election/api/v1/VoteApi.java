@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import br.edu.ulbra.election.election.model.Vote;
+
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
@@ -44,4 +46,13 @@ public class VoteApi {
     public List<Vote> GetCandidateVotes(@PathVariable Long candidateId){
         return voteService.GetCandidateVotes(candidateId);
     }
+    
+
+    //delete
+    @DeleteMapping("/{id}")
+    @ApiOperation(value = "Delete vote")
+    public GenericOutput delete(@PathVariable Long id){
+        return voteService.delete(id);
+    }
+    
 }

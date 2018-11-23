@@ -40,6 +40,22 @@ public class ResultApi {
         return getTotalVotes();
     }
     
+    //null votes
+    @GetMapping("/TotalNullVotes")
+    @ApiOperation(value="Get Total of Null  Votes")
+    public ResultOutput getNullVotes(){
+        return new ResultOutput();
+    }
+    
+    //blank votes
+    
+    @GetMapping("/TotalBlankVotes")
+    @ApiOperation(value="Get Total of Blank Votes")
+    public ResultOutput getBlankVotes(){
+        return new ResultOutput();
+    }
+    
+    
     
 
 }
