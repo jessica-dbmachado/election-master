@@ -22,7 +22,6 @@ public class ElectionCandidateResultOutput {
     }
 
     public Long getTotalVotes() {
-    	
         return totalVotes;
     }
 

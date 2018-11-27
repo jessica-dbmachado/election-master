@@ -17,14 +17,14 @@ public class VoterClientService {
         this.voterClient = voterClient;
     }
 
-    public VoterOutput getById(Long id){
-        return this.voterClient.getById(id);
+    public VoterOutput getById(Long voterId){
+        return voterClient.getById(voterId);
     }
 
-    @FeignClient(value="voter-service", url="${url.voter-service}")
+    @FeignClient(name = "voter-service", url = "${url.voter-service}")
     private interface VoterClient {
 
         @GetMapping("/v1/voter/{voterId}")
-        VoterOutput getById(@PathVariable(name = "voterId") Long voterId);
+        VoterOutput getById(@PathVariable(name="voterId") Long voterId);
     }
 }
